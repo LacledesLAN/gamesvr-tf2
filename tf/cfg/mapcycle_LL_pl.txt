@@ -12,6 +12,7 @@ pl_donkeykong_final
 pl_downhill_b1
 pl_frontier_final
 pl_geclburg
+pl_gibraltar
 pl_goldrush
 pl_great_heights_b3
 pl_halfacre
