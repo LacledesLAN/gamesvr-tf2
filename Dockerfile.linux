@@ -1,0 +1,28 @@
+FROM lacledeslan/gamesvr:srcds.linux
+
+MAINTAINER Laclede's LAN <contact@lacledeslan.com>
+
+ENV SERVER_NAME="gamesvr-tf2.linux"
+
+WORKDIR /app/bin/
+
+# Install Team Fortress 2
+RUN useradd \
+		--shell /bin/bash \
+		TF2 &&\
+	# Create output directory &&\
+		mkdir /app/bin --parents &&\
+	# Download &&\
+		/app/steamcmd/steamcmd.sh \
+			+login anonymous \
+			+force_install_dir /app/bin/ \
+			+app_update 232250 validate \
+			+quit &&\
+	# Set permissions &&\
+		chown -R TF2 /app/bin
+	
+COPY ./dist/ /app/bin/
+
+USER TF2
+
+CMD ["/bin/bash"]
