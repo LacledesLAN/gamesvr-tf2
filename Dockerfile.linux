@@ -1,26 +1,46 @@
+# escape=`
+
 FROM lacledeslan/gamesvr-srcds:linux
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-ENV SERVER_NAME="gamesvr-srcds-tf2:linux"
+ENV IMAGE="gamesvr-srcds-tf2:linux"
 
 WORKDIR /app/bin/
 
+# Install LL maps from public ftp
+# (done before app install so we don't accidentally overwrite stock content)
+RUN echo "Downloading maps from content server" &&`
+		mkdir --parents /tmp/maps/ &&`
+		cd /tmp/maps/ &&`
+		wget -m `
+			ftp://llgameserverbot:6gDyfNJhm4UsraE5@raw.content.lacledeslan.net/tf2/maps/ `
+			-nH --no-verbose --cut-dirs 4 &&`
+		rm -f .listing &&`
+	echo "Decompressing files" &&`
+		bzip2 --decompress /tmp/maps/*.*.bz2 &&`
+		rm -f /tmp/maps/*.bz2 &&`
+	echo "Moving uncompressed files to destination" &&`
+		mkdir --parents /app/bin/tf/maps/ &&`
+		mv /tmp/maps/*.* /app/bin/tf/maps/ &&`
+	echo "Performing Cleanup" &&`
+		rm -rf /tmp/*;
+
 # Install Team Fortress 2
-RUN useradd \
-		--shell /bin/bash \
-		TF2 &&\
-	# Create output directory &&\
-		mkdir /app/bin --parents &&\
-	# Download &&\
-		/app/steamcmd/steamcmd.sh \
-			+login anonymous \
-			+force_install_dir /app/bin/ \
-			+app_update 232250 validate \
-			+quit &&\
-	# Set permissions &&\
+RUN useradd `
+		--shell /bin/bash `
+		TF2 &&`
+	# Create output directory &&`
+		mkdir /app/bin --parents &&`
+	# Download &&`
+		/app/steamcmd/steamcmd.sh `
+			+login anonymous `
+			+force_install_dir /app/bin/ `
+			+app_update 232250 validate `
+			+quit &&`
+	# Set permissions &&`
 		chown -R TF2 /app/bin
-	
+
 COPY ./dist/ /app/bin/
 
 USER TF2
