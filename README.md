@@ -10,4 +10,4 @@ docker pull lacledeslan/gamesvr-srcds-tf2:linux
 # Build Triggers
 Automated builds of this image can be triggered by the following sources:
 * [Commits on GitHub](https://github.com/LacledesLAN/gamesvr-srcds-tf2)
-* [https://hub.docker.com/r/llgameserverbot/tf2-watcher/](Builds of llgameserverbot/tf2-watcher)
+* [Builds of llgameserverbot/tf2-watcher](https://hub.docker.com/r/llgameserverbot/tf2-watcher/)
