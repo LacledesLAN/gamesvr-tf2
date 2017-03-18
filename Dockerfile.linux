@@ -8,6 +8,13 @@ ENV IMAGE="gamesvr-srcds-tf2:linux"
 
 WORKDIR /app/bin/
 
+USER root
+
+RUN apt-get update &&`
+	apt-get install -y libstdc++6 &&`
+	apt-get autoclean &&`
+	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 # Install LL maps from public ftp
 # (done before app install so we don't accidentally overwrite stock content)
 RUN echo "Downloading maps from content server" &&`
