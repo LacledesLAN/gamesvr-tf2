@@ -1,9 +1,0 @@
-plr_hightower
-plr_hightower_event
-plr_highwind_a5
-plr_lumberyard_b1
-plr_nightfall_c
-plr_nightfall_final
-plr_panic_b2
-plr_pipeline
-plr_vegas_b01
