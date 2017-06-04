@@ -2,11 +2,14 @@
 
 FROM lacledeslan/gamesvr-srcds:linux
 
-MAINTAINER Laclede's LAN <contact@lacledeslan.com>
+LABEL maintainer "Laclede's LAN <contact@lacledeslan.com>"
 
 ENV IMAGE="gamesvr-srcds-tf2:linux"
 
-WORKDIR /app/bin/
+HEALTHCHECK NONE
+
+# Copy files (if any) from the build-cache
+COPY ./build-cache/ /app/bin/
 
 USER root
 
@@ -48,7 +51,7 @@ RUN useradd `
 	# Set permissions &&`
 		chown -R TF2 /app/bin
 
-COPY ./dist/ /app/bin/
+WORKDIR /app/bin/
 
 USER TF2
 
