@@ -8,19 +8,24 @@ ENV IMAGE="gamesvr-srcds-tf2:linux"
 
 HEALTHCHECK NONE
 
-# Copy files (if any) from the build-cache
-COPY ./build-cache/ /app/bin/
+# Set up user
+RUN useradd `
+		--home /app/bin `
+		--gid srcds `
+		--shell /bin/bash `
+		--system `
+		TF2 &&`
+	chown -R TF2:srcds /app/bin
 
-USER root
+USER TF2
 
 RUN apt-get update &&`
 	apt-get install -y libstdc++6 &&`
 	apt-get autoclean &&`
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Install LL maps from public ftp
-# (done before app install so we don't accidentally overwrite stock content)
-RUN echo "Downloading maps from content server" &&`
+# Custom content (done before app install so we don't accidentally overwrite stock content)
+RUN echo "Downloading content from LL public ftp server" &&`
 		mkdir --parents /tmp/maps/ &&`
 		cd /tmp/maps/ &&`
 		wget -m `
@@ -34,25 +39,21 @@ RUN echo "Downloading maps from content server" &&`
 		mkdir --parents /app/bin/tf/maps/ &&`
 		mv /tmp/maps/*.* /app/bin/tf/maps/ &&`
 	echo "Performing Cleanup" &&`
-		rm -rf /tmp/*;
+		rm -rf /tmp/*/*;
+
+# Copy files (if any) from the build-cache
+COPY ./build-cache/ /app/bin/
 
 # Install Team Fortress 2
-RUN useradd `
-		--shell /bin/bash `
-		TF2 &&`
-	# Create output directory &&`
-		mkdir /app/bin --parents &&`
-	# Download &&`
+RUN echo "Downloading Team Fortress 2 via SteamCMD" &&`
 		/app/steamcmd/steamcmd.sh `
 			+login anonymous `
 			+force_install_dir /app/bin/ `
 			+app_update 232250 validate `
-			+quit &&`
-	# Set permissions &&`
-		chown -R TF2 /app/bin
+			+quit
 
 WORKDIR /app/bin/
 
-USER TF2
-
 CMD ["/bin/bash"]
+
+ONBUILD USER root
