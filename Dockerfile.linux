@@ -8,52 +8,51 @@ ENV IMAGE="gamesvr-srcds-tf2:linux"
 
 HEALTHCHECK NONE
 
+# Install TF2 specific dependencies 
+RUN apt-get update && apt-get install -y `
+        libstdc++6 &&`
+    apt-get clean &&`
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 # Set up user
 RUN useradd `
-		--home /app/bin `
-		--gid srcds `
-		--shell /bin/bash `
-		--system `
-		TF2 &&`
-	chown -R TF2:srcds /app/bin
+        --home /app/bin `
+        --gid srcds `
+        --shell /bin/bash `
+        --system `
+        TF2 &&`
+    chown -R TF2:srcds /app/bin
 
 USER TF2
 
-RUN apt-get update &&`
-	apt-get install -y libstdc++6 &&`
-	apt-get autoclean &&`
-	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
 # Custom content (done before app install so we don't accidentally overwrite stock content)
 RUN echo "Downloading content from LL public ftp server" &&`
-		mkdir --parents /tmp/maps/ &&`
-		cd /tmp/maps/ &&`
-		wget -m `
-			ftp://llgameserverbot:6gDyfNJhm4UsraE5@raw.content.lacledeslan.net/tf2/maps/ `
-			-nH --no-verbose --cut-dirs 4 &&`
-		rm -f .listing &&`
-	echo "Decompressing files" &&`
-		bzip2 --decompress /tmp/maps/*.*.bz2 &&`
-		rm -f /tmp/maps/*.bz2 &&`
-	echo "Moving uncompressed files to destination" &&`
-		mkdir --parents /app/bin/tf/maps/ &&`
-		mv /tmp/maps/*.* /app/bin/tf/maps/ &&`
-	echo "Performing Cleanup" &&`
-		rm -rf /tmp/*/*;
+        mkdir --parents /tmp/maps/ &&`
+        cd /tmp/maps/ &&`
+        wget -m `
+            ftp://llgameserverbot:6gDyfNJhm4UsraE5@raw.content.lacledeslan.net/tf2/maps/ `
+            -nH --no-verbose --cut-dirs 4 &&`
+        rm -f .listing &&`
+    echo "Decompressing files" &&`
+        bzip2 --decompress /tmp/maps/*.*.bz2 &&`
+        rm -f /tmp/maps/*.bz2 &&`
+    echo "Moving uncompressed files to destination" &&`
+        mkdir --parents /app/bin/tf/maps/ &&`
+        mv /tmp/maps/*.* /app/bin/tf/maps/ &&`
+    echo "Performing Cleanup" &&`
+        rm -rf /tmp/*/*;
 
 # Copy files (if any) from the build-cache
 COPY ./build-cache/ /app/bin/
 
 # Install Team Fortress 2
 RUN echo "Downloading Team Fortress 2 via SteamCMD" &&`
-		/app/steamcmd/steamcmd.sh `
-			+login anonymous `
-			+force_install_dir /app/bin/ `
-			+app_update 232250 validate `
-			+quit
+        /app/steamcmd/steamcmd.sh `
+            +login anonymous `
+            +force_install_dir /app/bin/ `
+            +app_update 232250 validate `
+            +quit
 
 WORKDIR /app/bin/
-
-CMD ["/bin/bash"]
 
 ONBUILD USER root
