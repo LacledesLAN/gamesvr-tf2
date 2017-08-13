@@ -13,9 +13,11 @@ RUN dpkg --add-architecture i386
 
 # Install TF2 specific dependencies 
 RUN apt-get update && apt-get install -y `
+        libc6-i386 `
         libcurl4-gnutls-dev:i386 `
         libstdc++6 `
-        libstdc++6:i386 &&`
+        libstdc++6:i386 `
+        lib32z1 &&`
     apt-get clean &&`
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
