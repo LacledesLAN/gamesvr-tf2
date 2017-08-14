@@ -8,9 +8,6 @@ ENV IMAGE="gamesvr-srcds-tf2:linux"
 
 HEALTHCHECK NONE
 
-# Add x86 architecture support
-RUN dpkg --add-architecture i386
-
 # Install TF2 specific dependencies 
 RUN apt-get update && apt-get install -y `
         libc6-i386 `
