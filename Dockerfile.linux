@@ -50,7 +50,7 @@ LABEL MAINTAINER="Laclede's LAN <contact@lacledeslan.com>" `
 
 #Add user "TF2" (to user group "srcds")
 RUN groupadd --system srcds &&`
-    mkdir --parents /app/.steam/sdk32 &&`
+    mkdir --parents /app/.steam/sdk32 /app/tf/replay/server/tmp &&`
         chgrp srcds /app &&`
     useradd `
         --home /app `
