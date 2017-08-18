@@ -1,62 +1,71 @@
 # escape=`
 
-FROM lacledeslan/gamesvr-srcds:linux
+FROM lacledeslan/steamcmd:linux as steamcmd-builder
 
-LABEL maintainer "Laclede's LAN <contact@lacledeslan.com>"
+# Copy cached build files (if any)
+COPY ./build-cache/ /app/output
 
-ENV IMAGE="gamesvr-srcds-tf2:linux"
-
-HEALTHCHECK NONE
-
-# Install TF2 specific dependencies 
-RUN apt-get update && apt-get install -y `
-        libc6-i386 `
-        libcurl4-gnutls-dev:i386 `
-        libstdc++6 `
-        libstdc++6:i386 `
-        lib32z1 &&`
-    apt-get clean &&`
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Set up user
-RUN useradd `
-        --home /app/bin `
-        --gid srcds `
-        --shell /bin/bash `
-        --system `
-        TF2 &&`
-    chown -R TF2:srcds /app/bin
-
-USER TF2
-
-# Custom content (done before app install so we don't accidentally overwrite stock content)
-RUN echo "Downloading content from LL public ftp server" &&`
+RUN echo $'\n\nDownloading LL custom content from public ftp server' &&`
         mkdir --parents /tmp/maps/ &&`
         cd /tmp/maps/ &&`
         wget -m `
             ftp://llgameserverbot:6gDyfNJhm4UsraE5@raw.content.lacledeslan.net/tf2/maps/ `
             -nH --no-verbose --cut-dirs 4 &&`
         rm -f .listing &&`
-    echo "Decompressing files" &&`
+    echo "Decompressing downloaded content" &&`
         bzip2 --decompress /tmp/maps/*.*.bz2 &&`
         rm -f /tmp/maps/*.bz2 &&`
     echo "Moving uncompressed files to destination" &&`
-        mkdir --parents /app/bin/tf/maps/ &&`
-        mv /tmp/maps/*.* /app/bin/tf/maps/ &&`
-    echo "Performing Cleanup" &&`
-        rm -rf /tmp/*/*;
+        mkdir /app/output/tf/maps --parents &&`
+        mv /tmp/maps/*.* /app/output/tf/maps;
 
-# Copy files (if any) from the build-cache
-COPY ./build-cache/ /app/bin/
-
-# Install Team Fortress 2
-RUN echo "Downloading Team Fortress 2 via SteamCMD" &&`
-        /app/steamcmd/steamcmd.sh `
+# Install TF2
+RUN echo $'\n\nDownloading Team Fortress 2 via SteamCMD' &&`
+        /app/steamcmd.sh `
             +login anonymous `
-            +force_install_dir /app/bin/ `
+            +force_install_dir /app/output `
             +app_update 232250 validate `
-            +quit
+            +quit;
 
-WORKDIR /app/bin/
+#=======================================================================
+FROM i386/debian:stretch-slim
+
+ARG VCS_REF
+
+HEALTHCHECK NONE
+
+# Install dependencies
+RUN apt-get update && apt-get install -y `
+        libcurl3-gnutls libstdc++6 libncurses5 libz1 &&`
+    apt-get clean &&`
+    rm -rf /var/lib/apt/lists/*;
+
+LABEL MAINTAINER="Laclede's LAN <contact@lacledeslan.com>" `
+      org.label-schema.url="https://github.com/LacledesLAN" `
+      org.label-schema.vendor="Laclede's LAN" `
+      org.label-schema.vcs-ref=$VCS_REF `
+      org.label-schema.name="gamesvr-tf2" `
+      org.label-schema.description="Team Fortress 2 in Docker" `
+      org.label-schema.vcs-url="https://github.com/LacledesLAN/gamesvr-tf2"
+
+#Add user "TF2" (to user group "srcds")
+RUN groupadd --system srcds &&`
+    mkdir --parents /app/.steam/sdk32 &&`
+        chgrp srcds /app &&`
+    useradd `
+        --home /app `
+        --gid srcds `
+        --system `
+        TF2 &&`
+    chown -R TF2:srcds /app;
+
+USER TF2
+
+RUN ln -s /app/bin/steamclient.so /app/.steam/sdk32/steamclient.so
+
+# Copy in from SteamCMD Builder
+COPY --from=steamcmd-builder /app/output /app
+
+WORKDIR /app
 
 ONBUILD USER root
