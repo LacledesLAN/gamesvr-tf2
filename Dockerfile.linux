@@ -5,22 +5,19 @@ FROM lacledeslan/steamcmd:linux as tf2-builder
 # Copy cached build files (if any)
 COPY ./build-cache/ /output
 
-RUN echo "Downloading content from LL public ftp server" &&`
-        mkdir --parents /tmp/maps/ /output &&`
-        cd /tmp/maps/ &&`
-        wget -m `
-            ftp://llgameserverbot:6gDyfNJhm4UsraE5@raw.content.lacledeslan.net/tf2/maps/ `
+RUN echo $'\n\nDownloading LL custom content from public ftp server' &&`
+    mkdir --parents /tmp/maps/ &&`
+    cd /tmp/maps/ &&`
+    wget -m `
+        ftp://llgameserverbot:6gDyfNJhm4UsraE5@raw.content.lacledeslan.net/tf2/maps/ `
             -nH --no-verbose --cut-dirs 4 &&`
         rm -f .listing &&`
-    echo "Decompressing files" &&`
+    echo "Decompressing downloaded content" &&`
         bzip2 --decompress /tmp/maps/*.*.bz2 &&`
         rm -f /tmp/maps/*.bz2 &&`
     echo "Moving uncompressed files to destination" &&`
-        mkdir --parents /output/tf/maps/ &&`
-        mv /tmp/maps/*.bsp /output/tf/maps/ &&`
-        mv /tmp/maps/*.nav /output/tf/maps/ &&`
-    echo "Performing Cleanup" &&`
-        rm -rf /tmp/*/*;
+        mkdir /output/tf/maps --parents &&`
+        mv /tmp/maps/*.* /output/tf/maps;
 
 #=======================================================================
 FROM debian:stretch-slim
