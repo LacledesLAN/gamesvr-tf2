@@ -3,7 +3,7 @@
 FROM lacledeslan/steamcmd:linux as steamcmd-builder
 
 # Copy cached build files (if any)
-COPY ./build-cache/ /app/output
+COPY ./build-cache/ /output
 
 RUN echo $'\n\nDownloading LL custom content from public ftp server' &&`
         mkdir --parents /tmp/maps/ &&`
@@ -17,13 +17,13 @@ RUN echo $'\n\nDownloading LL custom content from public ftp server' &&`
         rm -f /tmp/maps/*.bz2 &&`
     echo "Moving uncompressed files to destination" &&`
         mkdir /app/output/tf/maps --parents &&`
-        mv /tmp/maps/*.* /app/output/tf/maps;
+        mv /tmp/maps/*.* /output/tf/maps;
 
 # Install TF2
 RUN echo $'\n\nDownloading Team Fortress 2 via SteamCMD' &&`
         /app/steamcmd.sh `
             +login anonymous `
-            +force_install_dir /app/output `
+            +force_install_dir /output `
             +app_update 232250 validate `
             +quit;
 
@@ -64,7 +64,7 @@ USER TF2
 RUN ln -s /app/bin/steamclient.so /app/.steam/sdk32/steamclient.so
 
 # Copy in from SteamCMD Builder
-COPY --from=steamcmd-builder /app/output /app
+COPY --from=steamcmd-builder /output /app
 
 WORKDIR /app
 
