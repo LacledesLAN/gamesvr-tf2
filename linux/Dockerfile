@@ -2,9 +2,6 @@
 
 FROM lacledeslan/steamcmd:linux as tf2-builder
 
-# Copy cached build files (if any)
-COPY ./build-cache/ /output
-
 RUN echo $'\n\nDownloading LL custom content from public ftp server' &&`
     mkdir --parents /tmp/maps/ &&`
     cd /tmp/maps/ &&`
@@ -22,33 +19,36 @@ RUN echo $'\n\nDownloading LL custom content from public ftp server' &&`
 #=======================================================================
 FROM debian:stretch-slim
 
-ARG VCS_REF
-
 HEALTHCHECK NONE
 
-LABEL MAINTAINER="Laclede's LAN <contact@lacledeslan.com>" `
-      org.label-schema.url="https://github.com/LacledesLAN" `
+ARG BUILDNODE="unspecified"
+ARG SOURCE_COMMIT
+
+LABEL maintainer="Laclede's LAN <contact@lacledeslan.com>" `
+      com.lacledeslan.build-node=$BUILDNODE `
+      org.label-schema.schema-version="1.0" `
+      org.label-schema.url="https://github.com/LacledesLAN/README.1ST" `
+      org.label-schema.vcs-ref=$SOURCE_COMMIT `
       org.label-schema.vendor="Laclede's LAN" `
-      org.label-schema.vcs-ref=$VCS_REF `
-      org.label-schema.name="gamesvr-tf2" `
       org.label-schema.description="Team Fortress 2 Server in Docker" `
       org.label-schema.vcs-url="https://github.com/LacledesLAN/gamesvr-tf2"
 
-## Dependencies & Environment
-RUN dpkg --add-architecture i386;
-
-RUN apt-get update && apt-get install -y `
-        lib32gcc1 lib32tinfo5 libcurl3-gnutls libstdc++6 libstdc++6:i386 libz1 &&`
+RUN dpkg --add-architecture i386 &&`
+    apt-get update && apt-get install -y `
+        ca-certificates lib32gcc1 lib32tinfo5 libcurl3-gnutls libstdc++6 libstdc++6:i386 libz1 &&`
     apt-get clean &&`
     rm -rf /var/lib/apt/lists/*;
 
-## Copy 'output files' in from builder
-COPY --from=tf2-builder /output /app
-
 ## TF2 is so large we can't reliably use multi-stage builds in docker cloud
 
+# Copy 'output files' in from builder
+COPY --from=tf2-builder /output /app
+
+# Copy cached build files (if any)
+COPY ./build-cache /app
+
 #Pull in SteamCMD
-COPY --from=tf2-builder /app /app/steamcmd
+COPY --from=csgo-builder /app /app/steamcmd
 
 # Install TF2 using SteamCMD
 RUN echo $'\n\nDownloading Team Fortress 2 via SteamCMD' &&`
@@ -58,16 +58,22 @@ RUN echo $'\n\nDownloading Team Fortress 2 via SteamCMD' &&`
             +app_update 232250 validate `
             +quit;
 
-#Add user "TF2". Assign to group "root" until [github.com/moby/moby/pull/34263] makes it into CE stable
-RUN mkdir --parents /app/.steam/sdk32 &&`
-    useradd `
-        --home /app `
-        --gid root `
-        --system `
-        TF2
+RUN echo $'\n\nLinking steamclient.so to prevent srcds_run errors' &&`
+        mkdir --parents /app/.steam/sdk32 &&`
+        ln -s /app/bin/steamclient.so /app/.steam/sdk32/steamclient.so
 
-RUN ln -s /app/bin/steamclient.so /app/.steam/sdk32/steamclient.so
+## Add in tests
+COPY ./tests /app/ll-tests
 
+RUN echo $'\n\nCreating user "TF2" (to group "root" until [github.com/moby/moby/pull/34263] makes it into CE stable)' &&`
+        useradd --home /app --gid root --system `
+            TF2 &&`
+    echo 'Setting user directory permissions' &&`
+        chown TF2:root /app &&`
+        find /app -type d -exec chmod 775 {} + &&`
+        chmod +x /app/ll-tests/*.sh
+
+# Intentionally set after all build steps
 USER TF2
 
 WORKDIR /app
