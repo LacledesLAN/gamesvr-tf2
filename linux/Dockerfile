@@ -48,7 +48,7 @@ COPY --from=tf2-builder /output /app
 COPY ./build-cache /app
 
 #Pull in SteamCMD
-COPY --from=csgo-builder /app /app/steamcmd
+COPY --from=tf2-builder /app /app/steamcmd
 
 # Install TF2 using SteamCMD
 RUN echo $'\n\nDownloading Team Fortress 2 via SteamCMD' &&`
