@@ -9,12 +9,12 @@
 docker pull lacledeslan/gamesvr-tf2
 ```
 
-**Run self tests** NOT YET WORKING
+**Run self tests**
 ```
 docker run -it --rm lacledeslan/gamesvr-tf2 ./ll-tests/gamesvr-tf2.sh
 ```
 
 **Run simple interactive server**
 ```
-docker run -it --rm --net=host lacledeslan/gamesvr-tf2 ./srcds_run -game tf -console -usercon +randommap +sv_lan 1
+docker run -it --rm --net=host lacledeslan/gamesvr-tf2 ./srcds_run -game tf +randommap +sv_lan 1
 ```
