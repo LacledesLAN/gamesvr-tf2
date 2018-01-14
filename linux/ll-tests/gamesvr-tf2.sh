@@ -1,5 +1,5 @@
 #!/bin/bash -i
-declare LLCK_LOGFILE="/app/ll-tests/gamesvr-blackmesa.log";
+declare LLCK_LOGFILE="/app/ll-tests/gamesvr-tf2.log";
 declare LLCK_CMD="/app/srcds_run -game tf +randommap -insecure -maxplayers 8 -norestart +sv_lan 1";
 declare LLCK_CMD_TIMEOUT=60;
 
