@@ -1,11 +1,13 @@
 # escape=`
 FROM lacledeslan/steamcmd:linux as tf2-builder
 
+ARG ftpServer=content.lacledeslan.net
+
 RUN echo $'\n\nDownloading LL custom content from public ftp server' &&`
     mkdir --parents /tmp/maps/ &&`
     cd /tmp/maps/ &&`
     wget -m `
-        ftp://llgameserverbot:6gDyfNJhm4UsraE5@raw.content.lacledeslan.net/tf2/maps/ `
+        ftp://llgameserverbot:6gDyfNJhm4UsraE5@$ftpServer/tf2/maps/ `
             -nH --no-verbose --cut-dirs 4 &&`
         rm -f .listing &&`
     echo "Decompressing downloaded content" &&`
