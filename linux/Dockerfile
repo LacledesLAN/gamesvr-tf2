@@ -1,21 +1,17 @@
 # escape=`
 FROM lacledeslan/steamcmd:linux as tf2-builder
 
-ARG ftpServer=content.lacledeslan.net
+ARG contentServer=content.lacledeslan.net
 
-RUN echo $'\n\nDownloading LL custom content from public ftp server' &&`
-    mkdir --parents /tmp/maps/ &&`
-    cd /tmp/maps/ &&`
-    wget -m `
-        ftp://llgameserverbot:6gDyfNJhm4UsraE5@$ftpServer/tf2/maps/ `
-            -nH --no-verbose --cut-dirs 4 &&`
-        rm -f .listing &&`
+RUN echo $'\n\nDownloading LL custom content from content server' &&`
+        mkdir --parents /tmp/maps/ &&`
+        cd /tmp/maps/ &&`
+        wget -rkpN -l 1 -nH  --no-verbose --cut-dirs=3 -R "*.htm*" -e robots=off "http://"$contentServer"/fastDownloads/tf2/maps/" &&`
     echo "Decompressing downloaded content" &&`
-        bzip2 --decompress /tmp/maps/*.*.bz2 &&`
-        rm -f /tmp/maps/*.bz2 &&`
+        bzip2 --decompress *.bz2 &&`
     echo "Moving uncompressed files to destination" &&`
         mkdir /output/tf/maps --parents &&`
-        mv /tmp/maps/*.* /output/tf/maps;
+        mv -n *.bsp /output/tf/maps;
 
 #=======================================================================
 FROM debian:stable-slim
@@ -55,8 +51,6 @@ COPY ./build-cache /app
 
 # Copy 'output files' in from builder
 COPY --from=tf2-builder /output /app
-# Ownership shim until [github.com/moby/moby/pull/34263] makes it into Docker Cloud
-RUN chown -R TF2:root /app;
 
 #Pull in SteamCMD
 COPY --from=tf2-builder /app /app/steamcmd
@@ -64,9 +58,9 @@ COPY --from=tf2-builder /app /app/steamcmd
 ## Add in tests
 COPY ./ll-tests /app/ll-tests
 
-RUN chmod +rx /app/ll-tests/*.sh &&`
-    chmod +rwx /app/ll-tests &&`
-    chown TF2:root -R /app/ll-tests;
+RUN chmod +x /app/ll-tests/*.sh &&`
+    echo "Ownership shim until [github.com/moby/moby/pull/34263] makes it into Docker Cloud:" &&`
+    chown -R TF2:root /app
 
 USER TF2
 
