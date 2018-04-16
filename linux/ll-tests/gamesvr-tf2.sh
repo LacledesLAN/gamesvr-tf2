@@ -2,7 +2,7 @@
 
 #####################################################################################################
 ### CONFIG VARS #####################################################################################
-declare LLTEST_CMD="/app/srcds_run -game tf +map koth_lumberyard -insecure -maxplayers 8 -norestart +sv_lan 1";
+declare LLTEST_CMD="/app/srcds_run -game tf +map arena_lolcano_b2 -insecure -maxplayers 8 -norestart +sv_lan 1";
 declare LLTEST_NAME="gamesvr-tf2-$(date '+%H%M%S')";
 #####################################################################################################
 #####################################################################################################
@@ -145,6 +145,7 @@ fi;
 
 #####################################################################################################
 ### TESTS ###########################################################################################
+# Stock TF2 server tests
 should_have 'Using default binary: ./srcds_linux' 'Sever started executing';
 should_lack 'Server restart in 10 seconds' 'Server is not boot-looping';
 should_lack 'Running the dedicated server as root' 'Server is not running under root';
@@ -152,7 +153,9 @@ should_lack 'Failed to load 32-bit libtinfo.so.5 or libncurses.so.5' 'Server has
 should_lack 'map load failed:' 'server unable to find custom-content map';
 should_have 'server_srv.so loaded for "Team Fortress"' 'srcds_run loaded Team Fortress 2';
 should_have 'Server is hibernating' 'srcds_run succesfully hibernated';
-should_echo "sv_cheats" '"sv_cheats" = "0"';
+
+# Verify server responds to commands
+should_echo "say STARTING COMMAND TESTS" 'Console: STARTING COMMAND TESTS';
 #####################################################################################################
 #####################################################################################################
 

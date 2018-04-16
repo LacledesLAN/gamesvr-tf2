@@ -3,20 +3,25 @@ FROM lacledeslan/steamcmd:linux as tf2-builder
 
 ARG contentServer=content.lacledeslan.net
 
-RUN echo $'\n\nDownloading LL custom content from content server' &&`
-        mkdir --parents /tmp/maps/ &&`
-        cd /tmp/maps/ &&`
-        wget -rkpN -l 1 -nH  --no-verbose --cut-dirs=3 -R "*.htm*" -e robots=off "http://"$contentServer"/fastDownloads/tf2/maps/" &&`
-    echo "Decompressing downloaded content" &&`
-        bzip2 --decompress *.bz2 &&`
-    echo "Moving uncompressed files to destination" &&`
-        mkdir /output/tf/maps --parents &&`
-        mv -n *.bsp /output/tf/maps;
+RUN if [ "$contentServer" = false ] ; then `
+        echo "\n\nSkipping custom LL content\n\n"; `
+    else `
+        echo "\nDownloading custom LL content from $contentServer" &&`
+            mkdir --parents /tmp/maps/ /output &&`
+            cd /tmp/maps/ &&`
+            wget -rkpN -l 1 -nH  --no-verbose --cut-dirs=3 -R "*.htm*" -e robots=off "http://"$contentServer"/fastDownloads/tf2/maps/" &&`
+        echo "Decompressing files" &&`
+            bzip2 --decompress /tmp/maps/*.bz2 &&`
+        echo "Moving uncompressed files to destination" &&`
+            mkdir --parents /output/tf/maps/ &&`
+            mv -n *.bsp /output/tf/maps/; `
+    fi;
 
 #=======================================================================
 FROM debian:stable-slim
 
 ARG BUILDNODE=unspecified
+ARG SKIP_STEAMCMD=false
 ARG SOURCE_COMMIT=unspecified
 
 HEALTHCHECK NONE
@@ -47,7 +52,7 @@ RUN useradd --home /app --gid root --system TF2 &&`
 ## TF2 Dedicated Server is so large we can't reliably use multi-stage builds in docker cloud
 
 # Copy cached build files (if any)
-COPY ./build-cache /app
+COPY ./steamcmd-cache /app
 
 # Copy 'output files' in from builder
 COPY --from=tf2-builder /output /app
@@ -64,13 +69,17 @@ RUN chmod +x /app/ll-tests/*.sh &&`
 
 USER TF2
 
-# Install TF2 Dedicated Server using SteamCMD
-RUN echo $'\n\nDownloading TF2 Dedicated Server via SteamCMD' &&`
+# Download TF2 Dedicated Server via SteamCMD
+RUN if [ "$SKIP_STEAMCMD" = true ] ; then `
+        echo "\n\nSkipping SteamCMD install -- using only contents from steamcmd-cache\n\n"; `
+    else `
+        echo "\n\nDownloading TF2 Dedicated Server via SteamCMD"; `
         /app/steamcmd/steamcmd.sh `
             +login anonymous `
             +force_install_dir /app `
             +app_update 232250 validate `
-            +quit;
+            +quit; `
+    fi;
 
 RUN echo $'\n\nLinking steamclient.so to prevent srcds_run errors' &&`
         mkdir -p /app/.steam/sdk32 &&`
