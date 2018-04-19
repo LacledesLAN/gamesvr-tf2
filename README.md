@@ -5,16 +5,19 @@
 [![](https://images.microbadger.com/badges/image/lacledeslan/gamesvr-tf2.svg)](https://microbadger.com/images/lacledeslan/gamesvr-tf2 "Get your own image badge on microbadger.com")
 
 **Download**
-```
-docker pull lacledeslan/gamesvr-tf2
+
+```shell
+docker pull lacledeslan/gamesvr-tf2;
 ```
 
 **Run self tests**
-```
-docker run -it --rm lacledeslan/gamesvr-tf2 ./ll-tests/gamesvr-tf2.sh
+
+```shell
+docker run -it --rm lacledeslan/gamesvr-tf2 ./ll-tests/gamesvr-tf2.sh;
 ```
 
 **Run simple interactive server**
-```
+
+```shell
 docker run -it --rm --net=host lacledeslan/gamesvr-tf2 ./srcds_run -game tf +randommap +sv_lan 1
 ```
