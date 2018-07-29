@@ -50,22 +50,12 @@ RUN useradd --home /app --gid root --system TF2 &&`
     chown TF2:root -R /app;
 
 ## TF2 Dedicated Server is so large we can't reliably use multi-stage builds in docker cloud
+COPY --chown=TF2:root ./steamcmd-cache /app
+COPY --chown=TF2:root --from=tf2-builder /output /app
+COPY --chown=TF2:root --from=tf2-builder /app /app/steamcmd
+COPY --chown=TF2:root ./ll-tests /app/ll-tests
 
-# Copy cached build files (if any)
-COPY ./steamcmd-cache /app
-
-# Copy 'output files' in from builder
-COPY --from=tf2-builder /output /app
-
-#Pull in SteamCMD
-COPY --from=tf2-builder /app /app/steamcmd
-
-## Add in tests
-COPY ./ll-tests /app/ll-tests
-
-RUN chmod +x /app/ll-tests/*.sh &&`
-    echo "Ownership shim until [github.com/moby/moby/pull/34263] makes it into Docker Cloud:" &&`
-    chown -R TF2:root /app
+RUN chmod +x /app/ll-tests/*.sh;
 
 USER TF2
 
@@ -86,5 +76,7 @@ RUN echo $'\n\nLinking steamclient.so to prevent srcds_run errors' &&`
         ln -s /app/bin/steamclient.so /app/.steam/sdk32/steamclient.so;
 
 WORKDIR /app
+
+CMD ["/bin/bash"]
 
 ONBUILD USER root
