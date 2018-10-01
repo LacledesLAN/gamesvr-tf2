@@ -11,19 +11,21 @@ This repository is maintained by [Laclede's LAN](https://lacledeslan.com). Its c
 [![](https://images.microbadger.com/badges/version/lacledeslan/gamesvr-tf2.svg)](https://microbadger.com/images/lacledeslan/gamesvr-tf2 "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/image/lacledeslan/gamesvr-tf2.svg)](https://microbadger.com/images/lacledeslan/gamesvr-tf2 "Get your own image badge on microbadger.com")
 
-**Download**
+### Download
 
 ```shell
 docker pull lacledeslan/gamesvr-tf2;
 ```
 
-**Run self tests**
+### Run Self Tests
+
+The image includes a test script that can be used to verify its contents. No changes or pull-requests will be accepted to this repository if any tests fail.
 
 ```shell
 docker run -it --rm lacledeslan/gamesvr-tf2 ./ll-tests/gamesvr-tf2.sh;
 ```
 
-**Run simple interactive server**
+### Run simple interactive server
 
 ```shell
 docker run -it --rm --net=host lacledeslan/gamesvr-tf2 ./srcds_run -game tf +randommap +sv_lan 1;
