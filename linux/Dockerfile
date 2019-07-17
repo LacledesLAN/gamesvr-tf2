@@ -18,7 +18,7 @@ RUN if [ "$contentServer" = false ] ; then `
     fi;
 
 #=======================================================================
-FROM debian:stable-slim
+FROM debian:stretch-slim
 
 ARG BUILDNODE=unspecified
 ARG SKIP_STEAMCMD=false
