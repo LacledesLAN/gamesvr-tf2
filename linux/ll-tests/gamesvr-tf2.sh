@@ -151,6 +151,7 @@ should_lack 'Server restart in 10 seconds' 'Server is not boot-looping';
 should_lack 'Running the dedicated server as root' 'Server is not running under root';
 should_lack 'Failed to load 32-bit libtinfo.so.5 or libncurses.so.5' 'Server has dependency "lib32tinfo5"';
 should_lack 'map load failed:' 'server unable to find custom-content map';
+should_lack 'Warning: failed to init SDL thread priority manager: SDL not found' 'Server has dependency libsdl2-2.0-0:i386';
 should_have 'server_srv.so loaded for "Team Fortress"' 'srcds_run loaded Team Fortress 2';
 should_have 'Server is hibernating' 'srcds_run succesfully hibernated';
 
