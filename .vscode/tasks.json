@@ -4,19 +4,18 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build",
+            "label": "Build Linux Image",
             "type": "shell",
-            "command": "docker pull lacledeslan/steamcmd:linux; docker pull debian:stable-slim; docker build ./linux -t lltest/gamesvr-tf2 --no-cache --build-arg BUILDNODE=$env:computername;",
+            "command": "docker pull lacledeslan/steamcmd; docker pull debian:bullseye-slim; docker build . --rm -f linux.Dockerfile -t lltest/gamesvr-tf2 --no-cache --build-arg BUILDNODE=$env:computername;",
             "group": "build",
-            "identifier": "build-image",
             "problemMatcher": [],
             "promptOnClose": true
         },
         {
-            "label": "Build & Execute Self Tests",
+            "label": "Build Linux Image & Execute Self Tests",
             "type": "shell",
             "command": "docker run -it --rm lltest/gamesvr-tf2 ./ll-tests/gamesvr-tf2.sh;",
-            "dependsOn": "build-image",
+            "dependsOn": "Build Linux Image",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -25,19 +24,19 @@
             "promptOnClose": true
         },
         {
-            "label": "Build & Run Interactive Server",
+            "label": "Build Linux Image & Run Interactive Server",
             "type": "shell",
             "command": "docker run -it --net=host lltest/gamesvr-tf2 ./srcds_run -game tf +randommap -insecure -maxplayers 8 +sv_lan 1 +usercon +rcon_password \"test123\";",
-            "dependsOn": "build-image",
+            "dependsOn": "Build Linux Image",
             "group": "build",
             "problemMatcher": [],
             "promptOnClose": true
         },
         {
-            "label": "Build & Shell In",
+            "label": "Build Linux Image & Shell In",
             "type": "shell",
             "command": "docker run -it --net=host --rm lltest/gamesvr-tf2;",
-            "dependsOn": "build-image",
+            "dependsOn": "Build Linux Image",
             "group": "build",
             "problemMatcher": [],
             "promptOnClose": true
@@ -45,7 +44,7 @@
         {
             "label": "Build local SteamCMD cache",
             "type": "shell",
-            "command": "docker run --rm -v ${cwd}/linux/steamcmd-cache:/output lacledeslan/steamcmd:linux ./steamcmd.sh +login anonymous +force_install_dir /output +app_update 232250 validate +quit",
+            "command": "docker run --rm -v ${cwd}/dist/steamcmd-cache:/output lacledeslan/steamcmd:linux ./steamcmd.sh +login anonymous +force_install_dir /output +app_update 232250 validate +quit",
             "problemMatcher": []
         }
     ]

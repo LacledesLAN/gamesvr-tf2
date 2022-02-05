@@ -1,5 +1,5 @@
-linux/steamcmd-cache/**
-!linux/steamcmd-cache/[Rr]eadme.md
+dist/steamcmd-cache/**
+!dist/steamcmd-cache/[Rr]eadme.md
 
 
 ### VisualStudioCode ###

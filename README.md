@@ -6,10 +6,7 @@ Team Fortress 2 (TF2) is a team-based multiplayer first-person shooter and the s
 
 This repository is maintained by [Laclede's LAN](https://lacledeslan.com). Its contents are intended to be bare-bones and used as a stock server. For examples of building a customized server from this Docker image browse its related child-projects [gamesvr-tf2-blindfrag](https://github.com/LacledesLAN/gamesvr-tf2-blindfrag) and [gamesvr-tf2-freeplay](https://github.com/LacledesLAN/gamesvr-tf2-freeplay). If any documentation is unclear or it has any issues please see [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-
 ## Linux
-[![](https://images.microbadger.com/badges/version/lacledeslan/gamesvr-tf2.svg)](https://microbadger.com/images/lacledeslan/gamesvr-tf2 "Get your own version badge on microbadger.com")
-[![](https://images.microbadger.com/badges/image/lacledeslan/gamesvr-tf2.svg)](https://microbadger.com/images/lacledeslan/gamesvr-tf2 "Get your own image badge on microbadger.com")
 
 ### Download
 
