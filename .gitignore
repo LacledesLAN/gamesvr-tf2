@@ -1,16 +1,8 @@
-.steamcmd/linux/app/*
-!.steamcmd/linux/app/.gitkeep
-.steamcmd/linux/cache/*
-!.steamcmd/linux/cache/readme.md
-
-
-### VisualStudioCode ###
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-.history
+### Project Specific ###
+cache/linux/steamcmd/*
+!cache/linux/steamcmd/.gitkeep
+cache/linux/tf2/*
+!cache/linux/tf2/README.md
 
 
 ### Linux Cruft ###
@@ -42,3 +34,12 @@
 ehthumbs.db
 ehthumbs_vista.db
 Thumbs.db
+
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history

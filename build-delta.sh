@@ -17,7 +17,7 @@ echo -e '\n\033[1m[Grabbing and Extracting SteamCMD]\033[0m'
 docker pull lacledeslan/steamcmd:latest
 docker container rm LLSteamCMD-Extractor &>/dev/null || true
 docker create --name LLSteamCMD-Extractor lacledeslan/steamcmd:latest
-docker cp LLSteamCMD-Extractor:/app "$(pwd)/.steamcmd/linux"
+docker cp LLSteamCMD-Extractor:/app "$(pwd)/cache/linux/steamcmd"
 docker container rm LLSteamCMD-Extractor
 
 
@@ -25,7 +25,7 @@ echo -e '\n\033[1m[Building Delta Container]\033[0m'
 docker pull lacledeslan/gamesvr-tf2:base
 docker container rm LL-TF2-DELTA-CAPTURE &>/dev/null || true
 docker run -it --name LL-TF2-DELTA-CAPTURE \
-    --mount type=bind,source="$(pwd)"/.steamcmd/linux/app/,target=/steamcmd/ \
+    --mount type=bind,source="$(pwd)"/cache/linux/steamcmd/app/,target=/steamcmd/ \
     lacledeslan/gamesvr-tf2 \
     /steamcmd/steamcmd.sh +force_install_dir /app +login anonymous +app_update 232250 +quit
 

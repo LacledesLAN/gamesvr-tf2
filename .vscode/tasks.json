@@ -26,12 +26,6 @@
                     "com.lacledeslan.build-node": "${env:computername}",
                 }
             }
-        },
-        {
-            "label": "Build local SteamCMD cache",
-            "type": "shell",
-            "command": "docker run --rm -v ${cwd}./.steamcmd/linux/cache/:/output lacledeslan/steamcmd:linux ./steamcmd.sh +force_install_dir /output +login anonymous +app_update 232250 validate +quit",
-            "problemMatcher": []
         }
     ]
 }

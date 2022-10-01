@@ -1,7 +1,8 @@
 # Optional SteamCMD Cache
 
 This folder can be used to cache SteamCMD downloads prior to executing `docker build`. While this speeds up builds on a
-slow Internet connections *builds on fast connections will be slower*. Your mileage will vary.
+slow Internet connections. Builds on fast internet connections will *likely be slower* due to context loading. Your
+mileage will vary.
 
 ## Disabling SteamCMD Downloads
 
@@ -17,8 +18,5 @@ a task is already defined otherwise you can use [Laclede's LAN SteamCMD Docker](
 image:
 
 ```shell
-docker run -i --rm -v ./.steamcmd/linux/cache/:/output lacledeslan/steamcmd:linux ./steamcmd.sh +login anonymous +force_install_dir /output +app_update <XXX> validate +quit
+./build-cache.sh
 ```
-
-> Replace `XXX` with the correct [Steam CMD Application
-ID](https://developer.valvesoftware.com/wiki/Dedicated_Servers_List).
