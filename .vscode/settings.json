@@ -1,7 +1,31 @@
 {
     "cSpell.words": [
+        "blindfrag",
+        "Dockerized",
+        "freeplay",
         "gamesvr",
-        "Laclede's",
+        "laclede",
+        "laclede's",
+        "laclede’s",
+        "lacledeslan",
         "steamcmd"
-    ]
+    ],
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true
+    },
+    "markdownlint.ignore": [
+        "LICENSE"
+    ],
+    "shellcheck.exclude": ["1091"],
+    "[markdown]": {
+        "cSpell.fixSpellingWithRenameProvider": true,
+        "cSpell.advanced.feature.useReferenceProviderWithRename": true,
+        "cSpell.advanced.feature.useReferenceProviderRemove": "/^#+\\s/",
+        "editor.rulers": [120],
+        "editor.unicodeHighlight.ambiguousCharacters": true,
+        "editor.unicodeHighlight.invisibleCharacters": true,
+        "editor.wordWrap": "on"
+    }
 }

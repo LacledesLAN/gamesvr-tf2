@@ -1,5 +1,7 @@
-dist/steamcmd-cache/**
-!dist/steamcmd-cache/[Rr]eadme.md
+.steamcmd/linux/app/*
+!.steamcmd/linux/app/.gitkeep
+.steamcmd/linux/cache/*
+!.steamcmd/linux/cache/readme.md
 
 
 ### VisualStudioCode ###

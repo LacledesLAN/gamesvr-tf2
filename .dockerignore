@@ -1,1 +1,4 @@
-dist/steamcmd-cache/readme.md
+.misc
+.vscode
+**/.gitkeep
+**/README.md
