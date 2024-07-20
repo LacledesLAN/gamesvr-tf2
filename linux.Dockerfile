@@ -32,7 +32,7 @@ RUN if [ "$contentServer" = false ] ; then `
     fi;
 
 #=======================================================================
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 ARG BUILDNODE=unspecified
 ARG SOURCE_COMMIT=unspecified
