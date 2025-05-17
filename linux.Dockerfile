@@ -1,5 +1,5 @@
 # escape=`
-FROM lacledeslan/steamcmd:linux as tf2-builder
+FROM lacledeslan/steamcmd:linux AS tf2-builder
 
 ARG contentServer=content.lacledeslan.net
 ARG SKIP_STEAMCMD=false
