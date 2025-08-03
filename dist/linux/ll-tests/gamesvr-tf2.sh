@@ -2,7 +2,7 @@
 
 #####################################################################################################
 ### CONFIG VARS #####################################################################################
-declare LLTEST_CMD="/app/srcds_run -game tf +map arena_lolcano_b2 -insecure -maxplayers 8 -norestart +sv_lan 1";
+declare LLTEST_CMD="/app/srcds_run -game tf +map koth_turbine -insecure -maxplayers 8 -norestart +sv_lan 1";
 declare LLTEST_NAME="gamesvr-tf2-$(date '+%H%M%S')";
 #####################################################################################################
 #####################################################################################################
@@ -153,7 +153,8 @@ should_lack 'Failed to load 32-bit libtinfo.so.5 or libncurses.so.5' 'Server has
 should_lack 'map load failed:' 'server unable to find custom-content map';
 should_lack 'Warning: failed to init SDL thread priority manager: SDL not found' 'Server has dependency libsdl2-2.0-0:i386';
 should_have 'server_srv.so loaded for "Team Fortress"' 'srcds_run loaded Team Fortress 2';
-should_have 'Server is hibernating' 'srcds_run succesfully hibernated';
+should_have 'Server is hibernating' 'srcds_run successfully hibernated';
+should_lack 'Your server needs to be restarted in order to receive the latest update.' 'server is up to date';
 
 # Verify server responds to commands
 should_echo "say STARTING COMMAND TESTS" 'Console: STARTING COMMAND TESTS';

@@ -7,28 +7,13 @@ ARG SKIP_STEAMCMD=false
 # Copy in local cache files (if any)
 COPY --chown=SteamCMD:root ./cache/linux/tf2/ /output
 
-# Download CSGO via SteamCMD
+# Download TF2 via SteamCMD
 RUN if [ "$SKIP_STEAMCMD" = true ] ; then `
         echo "\n\nSkipping SteamCMD install -- using only contents from steamcmd-cache\n\n"; `
     else `
         echo "\n\nDownloading TF2 via SteamCMD"; `
         mkdir --parents /output; `
         /app/steamcmd.sh +force_install_dir /output +login anonymous +app_update 232250 validate +quit;`
-    fi;
-
-# Download TF2 Dedicated Server via SteamCMD
-RUN if [ "$contentServer" = false ] ; then `
-        echo "\n\nSkipping LL custom content\n\n"; `
-    else `
-        echo "\nDownloading custom maps from $contentServer" &&`
-                mkdir --parents /tmp/maps/ /output &&`
-                cd /tmp/maps/ &&`
-                wget -rkpN -l 1 -nH  --no-verbose --cut-dirs=3 -R "*.htm*" -e robots=off "http://"$contentServer"/fastDownloads/tf2/maps/" &&`
-            echo "Decompressing files" &&`
-                bzip2 --decompress /tmp/maps/*.bz2 &&`
-            echo "Moving uncompressed files to destination" &&`
-                mkdir --parents /output/tf/maps/ &&`
-                mv --no-clobber *.bsp /output/tf/maps/; `
     fi;
 
 #=======================================================================
@@ -57,7 +42,7 @@ LABEL maintainer="Laclede's LAN <contact @lacledeslan.com>" `
       org.label-schema.description="Team Fortress 2 Dedicated Server" `
       org.label-schema.vcs-url="https://github.com/LacledesLAN/gamesvr-tf2"
 
-# Set up Enviornment
+# Set up Environment
 RUN useradd --home /app --gid root --system TF2 &&`
     mkdir -p /app/ll-tests &&`
     chown TF2:root -R /app;
