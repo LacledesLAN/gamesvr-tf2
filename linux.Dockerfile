@@ -1,7 +1,6 @@
 # escape=`
 FROM lacledeslan/steamcmd:linux AS tf2-builder
 
-ARG contentServer=content.lacledeslan.net
 ARG SKIP_STEAMCMD=false
 
 # Copy in local cache files (if any)
