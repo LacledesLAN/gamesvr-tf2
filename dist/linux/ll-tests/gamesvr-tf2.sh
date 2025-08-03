@@ -2,7 +2,7 @@
 
 #####################################################################################################
 ### CONFIG VARS #####################################################################################
-declare LLTEST_CMD="/app/srcds_run -game tf +map koth_turbine -insecure -maxplayers 8 -norestart +sv_lan 1";
+declare LLTEST_CMD="/app/srcds_run -game tf +map arena_well -insecure -maxplayers 8 -norestart +sv_lan 1";
 declare LLTEST_NAME="gamesvr-tf2-$(date '+%H%M%S')";
 #####################################################################################################
 #####################################################################################################
