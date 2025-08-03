@@ -9,8 +9,10 @@
         "laclede's",
         "laclede’s",
         "lacledeslan",
+        "LOGFILE",
         "randommap",
         "srcds",
+        "steamclient",
         "steamcmd"
     ],
     "files.exclude": {
