@@ -2,7 +2,7 @@
 
 #####################################################################################################
 ### CONFIG VARS #####################################################################################
-declare LLTEST_CMD="/app/srcds_run -game tf +map arena_well -insecure -maxplayers 8 -norestart +sv_lan 1";
+declare LLTEST_CMD="/app/srcds_run_64 -game tf +map arena_well -insecure -maxplayers 8 -norestart +sv_lan 1";
 declare LLTEST_NAME="gamesvr-tf2-$(date '+%H%M%S')";
 #####################################################################################################
 #####################################################################################################
@@ -146,12 +146,11 @@ fi;
 #####################################################################################################
 ### TESTS ###########################################################################################
 # Stock TF2 server tests
-should_have 'Using default binary: ./srcds_linux' 'Sever started executing';
+should_have 'Using default binary: ./srcds_linux64' 'Sever started executing';
 should_lack 'Server restart in 10 seconds' 'Server is not boot-looping';
 should_lack 'Running the dedicated server as root' 'Server is not running under root';
-should_lack 'Failed to load 32-bit libtinfo.so.5 or libncurses.so.5' 'Server has dependency "lib32tinfo5"';
-should_lack 'map load failed:' 'server unable to find custom-content map';
-should_lack 'Warning: failed to init SDL thread priority manager: SDL not found' 'Server has dependency libsdl2-2.0-0:i386';
+should_lack 'map load failed:' 'server unable to find map';
+should_lack 'Warning: failed to init SDL thread priority manager: SDL not found' 'Sever not reporting thread priority issues';
 should_have 'server_srv.so loaded for "Team Fortress"' 'srcds_run loaded Team Fortress 2';
 should_have 'Server is hibernating' 'srcds_run successfully hibernated';
 should_lack 'Your server needs to be restarted in order to receive the latest update.' 'server is up to date';

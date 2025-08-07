@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
         "blindfrag",
+        "BUILDNODE",
         "dockerhub",
         "Dockerized",
         "freeplay",
@@ -10,6 +11,8 @@
         "laclede’s",
         "lacledeslan",
         "LOGFILE",
+        "maxplayers",
+        "norestart",
         "randommap",
         "srcds",
         "steamclient",
