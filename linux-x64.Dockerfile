@@ -1,21 +1,12 @@
 # escape=`
-FROM local/tf2-base:latest
+FROM lacledeslan/gamesvr-tf2:base-latest
 
 ARG BUILDNODE=unspecified
 ARG SOURCE_COMMIT=unspecified
 
-HEALTHCHECK NONE
-
-RUN apt-get update &&`
-    apt-get install -y `
-        libcurl3-gnutls `
-        --no-install-recommends --no-install-suggests --no-upgrade &&`
-    apt-get clean &&`
-    echo "LC_ALL=en_US.UTF-8" >> /etc/environment &&`
-    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* &&`
-    ln -sf /app/.steam/sdk64/steamclient.so /app/bin/steamclient.so;
-
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
+
+HEALTHCHECK NONE
 
 LABEL maintainer="Laclede's LAN <contact @lacledeslan.com>" `
       com.lacledeslan.build-node=$BUILDNODE `
@@ -29,7 +20,15 @@ LABEL maintainer="Laclede's LAN <contact @lacledeslan.com>" `
 
 COPY --chown=TF2:root dist/linux-x64 /app
 
-RUN chmod +x /app/ll-tests/*.sh;
+RUN apt-get update &&`
+    apt-get install -y `
+        libcurl3-gnutls `
+        --no-install-recommends --no-install-suggests --no-upgrade &&`
+    apt-get clean &&`
+    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* &&`
+    ln -sf /app/.steam/sdk64/steamclient.so /app/bin/steamclient.so &&`
+    chmod +x /app/ll-tests/*.sh &&`
+    rm -f /app/srcds_run;
 
 USER TF2
 

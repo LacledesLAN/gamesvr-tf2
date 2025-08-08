@@ -21,6 +21,9 @@ RUN mkdir --parents /output/.steam/sdk64/ /app/ll-tests &&`
 
 FROM debian:bookworm-slim
 
+ARG BUILDNODE=unspecified
+ARG SOURCE_COMMIT=unspecified
+
 RUN apt-get update &&`
     apt-get install --no-install-recommends --no-install-suggests -y `
         ca-certificates locales locales-all tmux &&`

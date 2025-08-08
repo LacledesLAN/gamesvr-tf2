@@ -5,7 +5,7 @@ Quake and its 1999 remake, Team Fortress Classic. Players join one of two teams 
 battling in a variety of game modes including capture the flag and king of the hill. Valve continues to release new
 content, including maps, items, and game modes, as well as community-made updates and contributed content.
 
-![Team Fortress 2 Screenshot](https://raw.githubusercontent.com/LacledesLAN/gamesvr-tf2/master/.misc/artwork1.jpg "Team
+![Team Fortress 2 Screenshot](https://raw.githubusercontent.com/LacledesLAN/gamesvr-tf2/master/Documentation/images/artwork01.jpg "Team
  Fortress 2 Screenshot")
 
 This repository is maintained by [Laclede's LAN](https://lacledeslan.com). Its contents are intended to be bare-bones
@@ -14,27 +14,20 @@ child-projects [gamesvr-tf2-blindfrag](https://github.com/LacledesLAN/gamesvr-tf
 [gamesvr-tf2-freeplay](https://github.com/LacledesLAN/gamesvr-tf2-freeplay). If any documentation is unclear or it has
 any issues please see [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-## Linux
-
-### Download
-
-```shell
-docker pull lacledeslan/gamesvr-tf2;
-```
-
-### Run Self Tests
-
-The image includes a test script that can be used to verify its contents. No changes or pull-requests will be accepted
-to this repository if any tests fail.
-
-```shell
-docker run -it --rm lacledeslan/gamesvr-tf2 ./ll-tests/gamesvr-tf2.sh;
-```
+## Linux x64 (64-bit)
 
 ### Run simple interactive server
 
 ```shell
-docker run -it --rm --net=host lacledeslan/gamesvr-tf2 ./srcds_run -game tf +randommap +sv_lan 1;
+docker run -it --rm --net=host lacledeslan/gamesvr-tf2 ./srcds_run_64 -game tf +randommap +sv_lan 1;
+```
+
+## Linux x86 (32-bit)
+
+### Run simple interactive server
+
+```shell
+docker run -it --rm --net=host lacledeslan/gamesvr-tf2:32-bit ./srcds_run -game tf +randommap +sv_lan 1;
 ```
 
 ## Getting Started with Game Servers in Docker
