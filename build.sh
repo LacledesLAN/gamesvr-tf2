@@ -61,9 +61,9 @@ readonly commit_hash="$(
 
 
 echo -e '\n\n';
-echo -e '\033[1m/===========================\\\033[0m'
-echo -e '\033[1m[ tf2-base / tf2-base-delta ]\033[0m'
-echo -e '\033[1m\\===========================/\033[0m'
+echo -e '\033[1m/================================\\\033[0m'
+echo -e '\033[1m[ tf2-base-full / tf2-base-latest ]\033[0m'
+echo -e '\033[1m\\===============================/\033[0m'
 
 
 if [ "$option_delta_updates" != 'true' ]; then
