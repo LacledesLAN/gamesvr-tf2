@@ -67,9 +67,7 @@ echo -e '\033[1m\\===============================/\033[0m'
 
 
 if [ "$option_delta_updates" != 'true' ]; then
-    #
-    # Full Update
-    #
+    echo "Full Rebuild of base layers";
 
     echo -e '\n\033[1m[Build Image]\033[0m';
     docker build . -f linux-base.Dockerfile --rm --tag lacledeslan/gamesvr-tf2:base-full --tag lacledeslan/gamesvr-tf2:base-latest --no-cache --pull --build-arg BUILDNODE="$build_node" --build-arg SOURCECOMMIT="$commit_hash"
@@ -80,9 +78,7 @@ if [ "$option_delta_updates" != 'true' ]; then
     echo "> push lacledeslan/gamesvr-tf2:base-latest";
     docker push lacledeslan/gamesvr-tf2:base-latest
 else
-    #
-    # Delta Update
-    #
+    echo "Delta update of base-latest";
 
     echo -e '\n\033[1m[Grabbing and Extracting SteamCMD]\033[0m'
     # to bad `--volumes-from` doesn't support path aliasing ヽ(ಠ_ಠ)ノ
