@@ -23,7 +23,7 @@ COPY --chown=TF2:root dist/linux-x86 /app
 RUN dpkg --add-architecture i386 &&`
     apt-get update &&`
     apt-get install -y `
-        lib32gcc-s1 libcurl4-gnutls-dev:i386 libncurses5:i386 libsdl2-2.0-0:i386 libstdc++6 libstdc++6:i386 libtcmalloc-minimal4:i386 `
+        lib32gcc-s1 libcurl4-gnutls-dev:i386 libsdl2-2.0-0:i386 libstdc++6 libstdc++6:i386 libtcmalloc-minimal4:i386 `
         --no-install-recommends --no-install-suggests --no-upgrade &&`
     apt-get clean &&`
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* &&`
