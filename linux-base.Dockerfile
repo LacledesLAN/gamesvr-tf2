@@ -19,7 +19,7 @@ RUN if [ "$SKIP_STEAMCMD" = true ] ; then `
 RUN mkdir --parents /output/.steam/sdk64/ /app/ll-tests &&`
     cp /app/linux64/steamclient.so /output/.steam/sdk64/steamclient.so;
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 ARG BUILDNODE=unspecified
 ARG SOURCE_COMMIT=unspecified

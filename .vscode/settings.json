@@ -15,7 +15,8 @@
         "randommap",
         "srcds",
         "steamclient",
-        "steamcmd"
+        "steamcmd",
+        "trixie"
     ],
     "files.exclude": {
         "**/.git": true,
