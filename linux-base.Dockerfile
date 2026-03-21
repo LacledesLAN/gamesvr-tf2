@@ -16,7 +16,7 @@ RUN if [ "$SKIP_STEAMCMD" = true ] ; then `
     fi;
 
 # Grab x64 version of steamclient.so
-RUN mkdir --parents /output/.steam/sdk64/ /app/ll-tests &&`
+RUN mkdir --parents /output/.steam/sdk64/ /app/tf2/ll-tests &&`
     cp /app/linux64/steamclient.so /output/.steam/sdk64/steamclient.so;
 
 FROM debian:trixie-slim
@@ -30,15 +30,15 @@ RUN apt-get update &&`
     apt-get clean &&`
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* &&`
     echo "LC_ALL=en_US.UTF-8" >> /etc/environment &&`
-    useradd --home /app --gid root --system TF2 &&`
-    mkdir --parents /app &&`
-    chown TF2:root -R /app;
+    useradd --home /app/tf2 --gid root --system TF2 &&`
+    mkdir --parents /app/tf2 &&`
+    chown TF2:root -R /app/tf2;
 
-COPY --chown=TF2:root --from=tf2-builder /output /app
+COPY --chown=TF2:root --from=tf2-builder /output /app/tf2
 
 USER TF2
 
-WORKDIR /app
+WORKDIR /app/tf2
 
 CMD ["/bin/bash"]
 

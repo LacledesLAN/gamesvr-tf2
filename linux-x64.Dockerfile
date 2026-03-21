@@ -18,7 +18,7 @@ LABEL maintainer="Laclede's LAN <contact @lacledeslan.com>" `
       org.label-schema.vcs-url="https://github.com/LacledesLAN/gamesvr-tf2" `
       architecture="amd64"
 
-COPY --chown=TF2:root dist/linux-x64 /app
+COPY --chown=TF2:root dist/linux-x64 /app/tf2
 
 RUN apt-get update &&`
     apt-get install -y `
@@ -26,9 +26,9 @@ RUN apt-get update &&`
         --no-install-recommends --no-install-suggests --no-upgrade &&`
     apt-get clean &&`
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* &&`
-    ln -sf /app/.steam/sdk64/steamclient.so /app/bin/steamclient.so &&`
-    chmod +x /app/ll-tests/*.sh &&`
-    rm -f /app/srcds_run;
+    ln -sf /app/tf2/.steam/sdk64/steamclient.so /app/tf2/bin/steamclient.so &&`
+    chmod +x /app/tf2/ll-tests/*.sh &&`
+    rm -f /app/tf2/srcds_run;
 
 USER TF2
 

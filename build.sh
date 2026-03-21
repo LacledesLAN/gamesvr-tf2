@@ -85,7 +85,7 @@ else
     docker pull lacledeslan/steamcmd:latest
     docker container rm LLSteamCMD-Extractor &>/dev/null || true
     docker create --name LLSteamCMD-Extractor lacledeslan/steamcmd:latest
-    docker cp LLSteamCMD-Extractor:/app "$(pwd)/cache/linux/steamcmd"
+    docker cp LLSteamCMD-Extractor:/app/tf2 "$(pwd)/cache/linux/steamcmd"
     docker container rm --force LLSteamCMD-Extractor &>/dev/null || true
 
 
@@ -93,9 +93,9 @@ else
     docker pull lacledeslan/gamesvr-tf2:base-full
     docker container rm LL-TF2-DELTA-CAPTURE &>/dev/null || true
     docker run -it --name LL-TF2-DELTA-CAPTURE \
-        --mount type=bind,source="$(pwd)"/cache/linux/steamcmd/app/,target=/steamcmd/ \
+        --mount type=bind,source="$(pwd)"/cache/linux/steamcmd/app/tf2/,target=/steamcmd/ \
         lacledeslan/gamesvr-tf2:base-full \
-        /steamcmd/steamcmd.sh +force_install_dir /app +login anonymous +app_update 232250 +quit
+        /steamcmd/steamcmd.sh +force_install_dir /app/tf2 +login anonymous +app_update 232250 +quit
 
 
     echo -e '\n\033[1m[Committing base-latest Container to Image]\033[0m'

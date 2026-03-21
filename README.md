@@ -19,7 +19,7 @@ any issues please see [CONTRIBUTING.md](./CONTRIBUTING.md).
 ### Run simple interactive server
 
 ```shell
-docker run -it --rm --net=host lacledeslan/gamesvr-tf2 ./srcds_run_64 -game tf +randommap +sv_lan 1;
+docker run -it --rm --net=host lacledeslan/gamesvr-tf2:latest ./srcds_run_64 -game tf +randommap +sv_lan 1;
 ```
 
 ## Linux x86 (32-bit)

@@ -2,7 +2,7 @@
 
 #####################################################################################################
 ### CONFIG VARS #####################################################################################
-declare LLTEST_CMD="/app/srcds_run_64 -game tf +map arena_well -insecure -maxplayers 8 -norestart +sv_lan 1";
+declare LLTEST_CMD="/app/tf2/srcds_run_64 -game tf +map arena_well -insecure -maxplayers 8 -norestart +sv_lan 1";
 declare LLTEST_NAME="gamesvr-tf2-$(date '+%H%M%S')";
 #####################################################################################################
 #####################################################################################################
@@ -154,6 +154,7 @@ should_lack 'Warning: failed to init SDL thread priority manager: SDL not found'
 should_have 'server_srv.so loaded for "Team Fortress"' 'srcds_run loaded Team Fortress 2';
 should_have 'Server is hibernating' 'srcds_run successfully hibernated';
 should_lack 'Your server needs to be restarted in order to receive the latest update.' 'server is up to date';
+should_lack 'steamclient.so: wrong ELF class: ELFCLASS32' 'steamclient.so is 64-bit';
 
 # Verify server responds to commands
 should_echo "say STARTING COMMAND TESTS" 'Console: STARTING COMMAND TESTS';
