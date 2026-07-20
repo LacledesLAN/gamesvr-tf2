@@ -18,18 +18,22 @@ RUN if [ "$SKIP_STEAMCMD" = true ] ; then \
 RUN mkdir --parents /output/.steam/sdk64/ /app/tf2/ll-tests && \
     cp /app/linux64/steamclient.so /output/.steam/sdk64/steamclient.so;
 
+
+#---------------------------------
 FROM debian:trixie-slim
 
-ARG BUILD_NODE=unspecified
-ARG GIT_REVISION=unspecified
+ARG BUILD_DATE=unspecified \
+    BUILD_NODE=unspecified \
+    GIT_REVISION=unspecified
 
 LABEL architecture="amd64" \
-    com.lacledeslan.build-node=$BUILD_NODE \
-    maintainer="Laclede's LAN <contact@lacledeslan.com>" \
-    org.opencontainers.image.description="TF2 Dedicated Server Stock Content" \
-    org.opencontainers.image.revision=$GIT_REVISION \
-    org.opencontainers.image.source="https://github.com/LacledesLAN/gamesvr-tf2" \
-    org.opencontainers.image.vendor="Laclede's LAN"
+      com.lacledeslan.build-node=$BUILD_NODE \
+      maintainer="Laclede's LAN <contact@lacledeslan.com>" \
+      org.opencontainers.image.created="$BUILD_DATE" \
+      org.opencontainers.image.description="TF2 Dedicated Server Stock Content" \
+      org.opencontainers.image.revision=$GIT_REVISION \
+      org.opencontainers.image.source="https://github.com/LacledesLAN/gamesvr-tf2" \
+      org.opencontainers.image.vendor="Laclede's LAN"
 
 RUN apt-get update && \
     apt-get install --no-install-recommends --no-install-suggests -y \
