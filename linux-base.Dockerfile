@@ -26,6 +26,8 @@ ARG BUILD_DATE=unspecified \
     BUILD_NODE=unspecified \
     GIT_REVISION=unspecified
 
+ENV LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
+
 LABEL architecture="amd64" \
       com.lacledeslan.build-node=$BUILD_NODE \
       maintainer="Laclede's LAN <contact@lacledeslan.com>" \
